@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.text.*;
 
 /*make arraylist, scan through the code, and in the while loop after hasnext save the line from before as a value within the arraylist, then say if arraylist.contains(word), -> discount*/
 public class CashRegister {
@@ -112,14 +113,46 @@ public class CashRegister {
          }
 
      }
+
                 //for loop each category, hasdiscount? if it does, print
     // comparable: "if (category == "BOLIG") System.out.print... then next, and next..."
 
 
 
 
-    public void printReceipt(String barcodeFilename){
-    }
+    private void createReceipt() {
+        sortPurchases();
+        String currentCategory = "";
+        for (String s : listOfPurchases) {
+            String[] temp = s.split(",");
+            String category = temp[0];
+            String name = temp[1];
+            double price = Double.parseDouble(temp[2]) + (Double.parseDouble(temp[3]) / 100);
+            double itemDiscount = 0;
+            String barcode = temp[4];
+            int amount = mapOfPurchases.get(barcode);
+            boolean hasDiscount = discounts.containsKey(barcode) && amount >= Integer.parseInt(discounts.get(barcode)[1]);
+            if (hasDiscount) {
+                itemDiscount = price - (Double.parseDouble(discounts.get(barcode)[2]) + (Double.parseDouble(discounts.get(barcode)[3]) / 100));
+            }
+            if (!category.equals(currentCategory)) {
+                System.out.printf("%n%-38s%n", categoryFormat(category));
+                currentCategory = category;
+            }
+            System.out.printf("%-19s",name);
+            if (amount == 1) {
+                if (name.length() > 19) System.out.printf("%18s%n",format(price));
+                else System.out.printf("%19s%n",format(price));
+            } else {
+                System.out.printf("%n%-19s%19s%n","  " + amount + " x " + format(price), format(amount * price));
+            }
+            if (hasDiscount) {
+                System.out.printf("%-19s%19s-%n", "RABAT", format(amount * itemDiscount));
+            }
+            subtotal = subtotal + (price * amount);
+            totalDiscount = totalDiscount + (itemDiscount * amount);
+        }
+
 
     public static void main(String[] args) {
         CashRegister cr = new CashRegister("input/prices.txt", "input/discounts.txt");
@@ -129,4 +162,5 @@ public class CashRegister {
         System.out.println();
     }
 }
+
 
