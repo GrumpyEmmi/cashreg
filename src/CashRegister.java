@@ -79,7 +79,6 @@ public class CashRegister {
                 quantityMap.put(barcode, 1);
             }
             if (hasDiscount = true){
-                
             }
         }
         catch
