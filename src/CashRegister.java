@@ -78,8 +78,6 @@ public class CashRegister {
                 }
                 quantityMap.put(barcode, 1);
             }
-            if (hasDiscount = true){
-            }
         }
         catch
         (IOException e) {
@@ -99,10 +97,11 @@ public class CashRegister {
                     int q = quantityMap.get(line);
                     quantityMap.put(line, q++);
                 }
-                quantityMap.put(line, 1);
-                productMap.get(barcode);
-                discountMap.get(barcode);
-                if (quantity == limit){
+                else quantityMap.put(line, 1);
+
+                productMap.get(line);
+                discountMap.get(line);
+                if (quantityMap.get(line).compareTo(discountMap.get(line).limit) >= 0){
                     hasDiscount = true;
                 }
             }
